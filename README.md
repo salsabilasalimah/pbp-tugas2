@@ -51,6 +51,7 @@ link : https://salsabila-salimah-meowlfootball.pbp.cs.ui.ac.id/
  - Lihat situs web di URL deployment PWS
 
 2. Buatlah bagan yang berisi request client ke web aplikasi berbasis Django beserta responnya dan jelaskan pada bagan tersebut kaitan antara urls.py, views.py, models.py, dan berkas html.
+<img width="731" height="869" alt="image" src="https://github.com/user-attachments/assets/3350b7aa-cf9b-450a-a789-a1fd59199f43" />
 
 Penjelasan: 
 Bagan tersebut menggambarkan alur kerja permintaan (request) dan respons (response) dalam framework Django dengan menggunakan pola MVT (Model–View–Template). Ketika seorang user mengirimkan permintaan, permintaan tersebut pertama kali masuk ke urls.py yang ada di tingkat proyek. File ini bertugas meneruskan permintaan ke urls.py di dalam aplikasi (main), untuk kemudian diarahkan ke fungsi yang sesuai di views.py. Pada tahap ini, views.py berperan dalam memproses logika aplikasi. Apabila dibutuhkan data dari database, maka views.py akan meminta model melalui models.py. Selanjutnya, models.py menjadi perantara antara logika aplikasi dan database; ia menerima permintaan dari views.py, mengakses database untuk mendapatkan data yang diminta, lalu mengembalikannya kepada views.py.
