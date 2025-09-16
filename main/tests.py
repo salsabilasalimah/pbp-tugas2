@@ -23,7 +23,6 @@ class MainTest(TestCase):
             category="electronics",
             is_featured=True,
             stock=10,
-            colors="Hitam, Merah"
         )
         # Memastikan atribut sesuai dengan yang dibuat
         self.assertEqual(product.name, "Laptop Gaming")

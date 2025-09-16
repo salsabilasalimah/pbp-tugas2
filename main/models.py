@@ -11,7 +11,7 @@ class Product(models.Model):
     category = models.CharField(max_length=100)
     is_featured = models.BooleanField()
     stock = models.PositiveIntegerField(default=0)
-    colors = models.CharField(max_length=255, blank=True)
+
 
     def __str__(self):
         return self.name
