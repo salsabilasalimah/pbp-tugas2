@@ -37,5 +37,3 @@ D. Pengujian Lokal
 E. Dokumentasi dan GitHub:
 > Akses URL API di Postman seperti yang diminta, mengambil tangkapan layar, dan menyertakannya di README.md.
 > Setelah semua langkah selesai dan teruji, saya akan melakukan git add, git commit, dan git push ke repositori GitHub untuk menyelesaikan tugas.
-6. Apakah ada feedback untuk asisten dosen tutorial 2 yang telah kamu kerjakan sebelumnya?
-= tidak ada
