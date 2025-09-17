@@ -15,25 +15,27 @@ Kita membutuhkan metode ini untuk memastikan integritas dan keamanan data sebelu
 = karena csrf_token bekerja dengan cara menambahkan token unik dan rahasia ke setiap form. Django akan memverifikasi token ini ketika form disubmit. Jika token tidak cocok, permintaan akan ditolak. Ini memastikan bahwa permintaan POST hanya bisa dilakukan melalui form yang sah dari situs kita.
 
 5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
-= 1. Pengembangan views.py
+= A. Pengembangan views.py
 > Mulai dengan membuat 4 fungsi baru di views.py seperti yang diminta: show_xml(), show_json(), show_xml_by_id(), dan show_json_by_id()
 > Setiap fungsi akan menggunakan News.objects.all() atau News.objects.filter(pk=id) untuk mengambil data dari database.
 > Kemudian, saya akan menggunakan serializers.serialize() untuk mengubah data tersebut menjadi format XML atau JSON.
 > Terakhir, fungsi akan mengembalikan HttpResponse dengan data yang telah diserialisasi dan content_type yang sesuai (application/xml atau application/json).
 > Untuk fungsi by-id, saya akan menambahkan try-except block untuk mengantisipasi jika ID tidak ditemukan, sehingga dapat mengembalikan respons 404 yang sesuai.
-2. Pengembangan urls.py
+B. Pengembangan urls.py
 > Setelah fungsi views selesai, buka urls.py dan mengimpor keempat fungsi baru tersebut.
 > Tambahkan empat path URL baru yang mengarah ke masing-masing fungsi.
 > Rute untuk fungsi by-id akan menyertakan parameter dinamis seperti <str:id>/ untuk menangkap ID berita yang diminta.
-3. Pengembangan Halaman HTML
+C. Pengembangan Halaman HTML
 > Pastikan main.html sudah diperbarui untuk menampilkan daftar berita dengan tombol + Add News dan tombol Read More yang mengarah ke halaman detail.
 > Buat create_news.html yang berisi form untuk menambahkan berita baru dan memastikan {% csrf_token %} ada di dalamnya.
 > Buat news_detail.html untuk menampilkan detail berita secara lengkap.
-4. Pengujian Lokal
+D. Pengujian Lokal
 > Jalankan server Django dengan python manage.py runserver.
 > Uji setiap fitur secara manual. Saya akan coba menambahkan data baru melalui form (/create-news/), lalu memastikan data tersebut muncul di halaman utama.
 > Selanjutnya klik Details untuk memastikan halaman detail berita berfungsi.
 > Terakhir, uji keempat URL API (/xml/, /json/, /xml/1/, /json/1/) di browser dan Postman untuk memastikan data dikembalikan dalam format yang benar.
-5. Dokumentasi dan GitHub:
+E. Dokumentasi dan GitHub:
 > Akses URL API di Postman seperti yang diminta, mengambil tangkapan layar, dan menyertakannya di README.md.
 > Setelah semua langkah selesai dan teruji, saya akan melakukan git add, git commit, dan git push ke repositori GitHub untuk menyelesaikan tugas.
+6. Apakah ada feedback untuk asisten dosen tutorial 2 yang telah kamu kerjakan sebelumnya?
+= tidak ada
