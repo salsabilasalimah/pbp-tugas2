@@ -1,74 +1,39 @@
-<<<<<<< HEAD
-=======
 link : https://salsabila-salimah-meowlfootball.pbp.cs.ui.ac.id/
 
-1. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
-> Membuat folder baru sebagai root yaitu pbp-tugas2
-> Membuat Virtual Environment
- - python -m venv env
-> Mengaktifkan Virtual Environment
- - env\Scripts\activate
-> Menginstall dependencies dan start django project
- - Tulis dependencies yang dibutuhkan di file requirements.txt
- - Jalankan pip install -r requirements.txt untuk menginstal semua dependencies
- - Jalankan django-admin startproject meowl_store untuk memulai Django dengan nama  meowl_store
-> Konfigurasi Environment Variables
- - Buat file '.env' di direktori root
- - Tulis 'PRODUCTION=False' di dalam file .env
- - Buat file .env.prod.
- - Tulis konfigurasi database di dalam .env.prod dengan 'PRODUCTION=True' dan 'SCHEMA=tugas_individu'
-> Konfigurasi settings.py
- - Modifikasi file settings.py dan tambahkan string pada 'ALLOWED_HOSTS = ["localhost", "127.0.0.1"]'
- - Tulis di atas code DEBUG, PRODUCTION = os.getenv('PRODUCTION', 'False').lower() == 'true'
- - Mengganti database konfigurasi untuk menggunakan PostgreSQL dengan kredensials dari environment variables
-> Membuat main app di project
- - python manage.py startapp main
- - tambahkan 'main' to INSTALLED_APPS di settings.py
-> Membuat models
- - Product model berisi nama, price, description, thumbnail, category, is_featured
-> Menjalankan server
- - python manage.py migrate
- - python manage.py runserver
-> Membuat views dan template 
- - import render pada views.py
- - Buat fungsi bernama show_main, siapkan data di dalam context, dan kirimkan render sebagai respons
- - Buat folder templates di dalam main, lalu buat file main.html di dalamnya
- - Tampilkan data dengan membuat variabel template untuk menampilkan nilai yang sudah dikirimkan dari context
-> Konfigurasi Routing URL 
- - Buka file urls.py yang ada di dalam folder main dan sesuaikan urlpatterns
- - Buka file urls.py yang ada di dalam direktori proyek meowl_store
- - Tambahkan include pada bagian import
- - Tambahkan path('', include('main.urls')) ke urlpatterns
- > Unit Testing
- - Buat file tests.py di dalam folder main
- - Impor TestCase, Client, dan News
- - Tambahkan fungsi-fungsi pengujian 
- - Jalankan python manage.py test di terminal
- > Deploy dengan PWS
- - Buat proyek baru di PWS
- - Tambahkan URL deployment PWS ke ALLOWED_HOSTS di settings.py
- - Jalankan perintah git add, git commit, dan git push.
- - Jalankan perintah yang terdaftar di PWS Project Command
- - Jalankan git push pws master
- - Lihat situs web di URL deployment PWS
+1. Mengapa kita memerlukan data delivery dalam implementasi sebuah platform?
+= Kita memerlukan data delivery untuk mengirimkan data dari satu komponen ke komponen lain dalam sebuah sistem. Ini penting karena aplikasi web modern sering kali terdiri dari berbagai bagian yang terpisah, seperti frontend (antarmuka pengguna) dan backend (server). Data delivery memungkinkan data dari backend disajikan kepada pengguna di frontend atau sebaliknya, serta memungkinkan komunikasi antar layanan yang berbeda. Contohnya, saat menambahkan berita baru di sebuah situs, data berita tersebut perlu dikirim dari browser (frontend) ke server (backend) untuk disimpan.
 
-2. Buatlah bagan yang berisi request client ke web aplikasi berbasis Django beserta responnya dan jelaskan pada bagan tersebut kaitan antara urls.py, views.py, models.py, dan berkas html.
-<img width="731" height="869" alt="image" src="https://github.com/user-attachments/assets/3350b7aa-cf9b-450a-a789-a1fd59199f43" />
+2. Menurutmu, mana yang lebih baik antara XML dan JSON? Mengapa JSON lebih populer dibandingkan XML?
+= Berdasarkan langkah yang sudah saya jalani, JSON lebih unggu;l/baik daripada XML, karena JSON sintaksnya lebih ringkas dan lebih mudah dibaca oleh manusia dan diurai (parse) oleh mesin, JSON menggunakan pasangan kunci-nilai (key-value pairs) yang mirip dengan objek JavaScript, sehingga sangat mudah diintegrasikan dengan aplikasi web yang menggunakan JavaScript. Meskipun XML bersifat self-descriptive dengan tag-nya, JSON juga self-descriptive melalui nama kunci yang jelas, tetapi tanpa overhead dari closing tags yang membuat ukuran data menjadi lebih besar. Secara umum, JSON lebih efisien untuk pertukaran data.
 
-Penjelasan: 
-Bagan tersebut menggambarkan alur kerja permintaan (request) dan respons (response) dalam framework Django dengan menggunakan pola MVT (Model–View–Template). Ketika seorang user mengirimkan permintaan, permintaan tersebut pertama kali masuk ke urls.py yang ada di tingkat proyek. File ini bertugas meneruskan permintaan ke urls.py di dalam aplikasi (main), untuk kemudian diarahkan ke fungsi yang sesuai di views.py. Pada tahap ini, views.py berperan dalam memproses logika aplikasi. Apabila dibutuhkan data dari database, maka views.py akan meminta model melalui models.py. Selanjutnya, models.py menjadi perantara antara logika aplikasi dan database; ia menerima permintaan dari views.py, mengakses database untuk mendapatkan data yang diminta, lalu mengembalikannya kepada views.py.
+3. Jelaskan fungsi dari metode is_valid() pada form Django dan mengapa kita membutuhkan metode tersebut?
+= Metode is_valid() pada Django Form berfungsi untuk memvalidasi data yang dikirimkan melalui form. Ketika form disubmit dengan metode POST, data tersebut diterima oleh server. Metode is_valid() akan memeriksa apakah data yang diterima, yaitu meliputi kesesuaiam dengan tipe data yang ditentukan pada model, memenuhi batasan (constraints) seperti panjang maksimum, apakah field wajib diisi, atau format data (misalnya email), Aman dari serangan seperti injeksi data.
 
-Setelah data tersedia, views.py akan mengolah data tersebut dan mengirimkannya ke berkas template, dalam hal ini main.html. Template bertugas menampilkan data dalam bentuk yang dapat dipahami oleh user. Hasil akhir berupa halaman HTML tersebut kemudian dikirimkan kembali kepada user sebagai respons. Dengan demikian, alur pada bagan ini memperlihatkan bagaimana Django mengatur hubungan antara URL, logika aplikasi, model data, dan tampilan, sehingga setiap permintaan dari user dapat diproses secara terstruktur hingga menghasilkan tampilan yang sesuai.
+Kita membutuhkan metode ini untuk memastikan integritas dan keamanan data sebelum menyimpannya ke database. Tanpa validasi ini, kita berisiko menyimpan data yang tidak valid, tidak lengkap, atau bahkan berbahaya, yang bisa menyebabkan error pada aplikasi atau celah keamanan
 
-3. Jelaskan peran settings.py dalam proyek Django!
-= settings.py merupakan pusat kendali yang menyimpan semua konfigurasi. File ini digunakan untuk menentukan aplikasi yang aktif (INSTALLED_APPS), middleware (termasuk WhiteNoise untuk static files), konfigurasi template, database (development SQLite, production dapat diarahkan ke PostgreSQL melalui environment variables), pengelolaan static files (STATIC_ROOT, STATICFILES_STORAGE), serta aspek keamanan seperti SECRET_KEY, DEBUG, dan ALLOWED_HOSTS. settiings.py ini memastikan seluruh aplikasi yang digunakan pada proyek user melalui INSTALLED_APPS dankredensialnya.
+4. Mengapa kita membutuhkan csrf_token saat membuat form di Django? Apa yang dapat terjadi jika kita tidak menambahkan csrf_token pada form Django? Bagaimana hal tersebut dapat dimanfaatkan oleh penyerang?
+= karena csrf_token bekerja dengan cara menambahkan token unik dan rahasia ke setiap form. Django akan memverifikasi token ini ketika form disubmit. Jika token tidak cocok, permintaan akan ditolak. Ini memastikan bahwa permintaan POST hanya bisa dilakukan melalui form yang sah dari situs kita.
 
-4. Bagaimana cara kerja migrasi database di Django?
-Django sering dijadikan sebagai permulaan dalam pembelajaran pengembangan perangkat lunak karena menggunakan bahasa Python yang sederhana, mudah dipahami, dan banyak digunakan di berbagai bidang. Framework ini juga telah menyediakan beragam fitur bawaan, sehingga pemula tidak perlu direpotkan dengan konfigurasi yang rumit sejak awal. Selain itu, Django menerapkan arsitektur MVT (Model–View–Template) yang membantu dalam memahami pemisahan tanggung jawab di dalam aplikasi. Model berfungsi untuk mengatur data serta berhubungan langsung dengan database, View berperan dalam mengelola logika aplikasi sesuai permintaan pengguna, sedangkan Template bertugas menampilkan data dalam bentuk antarmuka yang dapat dipahami pengguna. Dengan pola tersebut, pembelajar pemula dapat memperoleh gambaran menyeluruh mengenai bagaimana sebuah aplikasi web bekerja secara terstruktur, sekaligus mempraktikkan prinsip-prinsip baik dalam pengembangan perangkat lunak modern.
-
-5. Menurut Anda, dari semua framework yang ada, mengapa framework Django dijadikan permulaan pembelajaran pengembangan perangkat lunak?
-= Django sering dijadikan permulaan belajar karena dia pakai Python yang mudah dipahami, strukturnya rapi, dan sudah menyediakan banyak fitur bawaan seperti autentikasi, ORM, dan admin panel. Jadi pemula bisa langsung belajar konsep inti pengembangan perangkat lunak tanpa ribet setting ini-itu. Selain itu, Django juga ngajarin praktik baik dalam membangun aplikasi, sehingga cocok jadi fondasi awal sebelum coba framework lain yang lebih kompleks.
-
-6. Apakah ada feedback untuk asisten dosen tutorial 1 yang telah kamu kerjakan sebelumnya?
-= tidak ada, terima kasih kaka asdos semoga sukses dan sehat selalu
->>>>>>> d9389e5efd43284a70203084ca64cc9528230b42
+5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
+= 1. Pengembangan views.py
+> Mulai dengan membuat 4 fungsi baru di views.py seperti yang diminta: show_xml(), show_json(), show_xml_by_id(), dan show_json_by_id()
+> Setiap fungsi akan menggunakan News.objects.all() atau News.objects.filter(pk=id) untuk mengambil data dari database.
+> Kemudian, saya akan menggunakan serializers.serialize() untuk mengubah data tersebut menjadi format XML atau JSON.
+> Terakhir, fungsi akan mengembalikan HttpResponse dengan data yang telah diserialisasi dan content_type yang sesuai (application/xml atau application/json).
+> Untuk fungsi by-id, saya akan menambahkan try-except block untuk mengantisipasi jika ID tidak ditemukan, sehingga dapat mengembalikan respons 404 yang sesuai.
+2. Pengembangan urls.py
+> Setelah fungsi views selesai, buka urls.py dan mengimpor keempat fungsi baru tersebut.
+> Tambahkan empat path URL baru yang mengarah ke masing-masing fungsi.
+> Rute untuk fungsi by-id akan menyertakan parameter dinamis seperti <str:id>/ untuk menangkap ID berita yang diminta.
+3. Pengembangan Halaman HTML
+> Pastikan main.html sudah diperbarui untuk menampilkan daftar berita dengan tombol + Add News dan tombol Read More yang mengarah ke halaman detail.
+> Buat create_news.html yang berisi form untuk menambahkan berita baru dan memastikan {% csrf_token %} ada di dalamnya.
+> Buat news_detail.html untuk menampilkan detail berita secara lengkap.
+4. Pengujian Lokal
+> Jalankan server Django dengan python manage.py runserver.
+> Uji setiap fitur secara manual. Saya akan coba menambahkan data baru melalui form (/create-news/), lalu memastikan data tersebut muncul di halaman utama.
+> Selanjutnya klik Details untuk memastikan halaman detail berita berfungsi.
+> Terakhir, uji keempat URL API (/xml/, /json/, /xml/1/, /json/1/) di browser dan Postman untuk memastikan data dikembalikan dalam format yang benar.
+5. Dokumentasi dan GitHub:
+> Akses URL API di Postman seperti yang diminta, mengambil tangkapan layar, dan menyertakannya di README.md.
+> Setelah semua langkah selesai dan teruji, saya akan melakukan git add, git commit, dan git push ke repositori GitHub untuk menyelesaikan tugas.
