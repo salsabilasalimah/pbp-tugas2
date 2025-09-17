@@ -37,3 +37,19 @@ Kita membutuhkan metode ini untuk memastikan integritas dan keamanan data sebelu
 5. Dokumentasi dan GitHub:
 > Akses URL API di Postman seperti yang diminta, mengambil tangkapan layar, dan menyertakannya di README.md.
 > Setelah semua langkah selesai dan teruji, saya akan melakukan git add, git commit, dan git push ke repositori GitHub untuk menyelesaikan tugas.
+
+xml
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/a1eb2cda-2506-4f74-b8e7-d49cd6b3366b" />
+
+json
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/516ab775-d71c-448e-bfb2-aa1559443bd7" />
+
+json with id
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/400d6add-158e-4b7c-baa2-4b4a012da060" />
+
+xml with id 
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/d0636913-88fd-4e3f-aed4-85efb2d798b1" />
+
+
+
+
