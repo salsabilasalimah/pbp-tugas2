@@ -10,9 +10,9 @@ class Product(models.Model):
     description = models.TextField()
     thumbnail = models.URLField(blank=True, null=True)
     category = models.CharField(max_length=100)
-    is_featured = models.BooleanField()
+    is_featured = models.BooleanField(default=0)
     stock = models.PositiveIntegerField(default=0)
-
+    views = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.name
@@ -26,3 +26,7 @@ class Product(models.Model):
         if 0 < quantity <= self.stock:
             self.stock -= quantity
             self.save()
+
+    def increment_views(self):
+        self.views += 1
+        self.save()
