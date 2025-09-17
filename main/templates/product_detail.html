@@ -1,18 +1,45 @@
-{% extends 'base.html' %}
-{% block content %}
-<p><a href="{% url 'main:show_main' %}"><button>← Back to Product List</button></a></p>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product Detail</title>
 
-<h1>{{ product.title }}</h1>
-<p><b>{{ product.get_category_display }}</b>{% if product.is_featured %} | 
-    <b>Featured</b>{% endif %}{% if product.is_product_hot %} | 
-    <b>Hot</b>{% endif %} | <i>{{ product.created_at|date:"d M Y, H:i" }}</i> 
-    | Views: {{ product.product_views }}</p>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
 
-{% if product.thumbnail %}
-<img src="{{ product.thumbnail }}" alt="Product thumbnail" width="300">
-<br /><br />
-{% endif %}
+<body style="font-family: Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px;">
 
-<p>{{ product.content }}</p>
+    <header style="text-align:center;">
+        <h1>My Website</h1>
+        <hr>
+    </header>
 
-{% endblock content %}
+    <main>
+        <p><a href="{% url 'main:show_main' %}">
+            <button>← Back to Product List</button>
+        </a></p>
+
+        <h1>{{ product.name }}</h1>
+        <p>
+            <b>{{ product.category }}</b>
+            {% if product.is_featured %} | <b>Featured</b>{% endif %}
+            | <i>Stock: {{ product.stock }}</i>
+        </p>
+
+        {% if product.thumbnail %}
+        <img src="{{ product.thumbnail }}" alt="Product thumbnail" width="300" style="border-radius: 8px;">
+        <br><br>
+        {% endif %}
+
+        <p style="font-size: 16px; line-height: 1.5;">{{ product.description }}</p>
+    </main>
+
+    <footer style="text-align:center; margin-top: 40px; font-size: 14px; color: #555;">
+        <hr>
+        <p>© 2025 My Website</p>
+    </footer>
+
+</body>
+</html>
