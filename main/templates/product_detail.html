@@ -1,45 +1,47 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Product Detail</title>
+{% extends 'base.html' %}
+{% block content %}
 
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
+<!-- Back button -->
+<p>
+  <a href="{% url 'main:show_main' %}">
+    <button>← Back to Product List</button>
+  </a>
+</p>
 
-<body style="font-family: Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px;">
+<!-- Product name and basic info -->
+<h1>{{ product.name }}</h1>
+<p>
+  <b>{{ product.category }}</b>
+  {% if product.is_featured %} | <b>Featured</b>{% endif %}
+  | <i>{{ product.created_at|date:"d M Y, H:i" }}</i>
+  | Views: {{ product.views }}
+</p>
 
-    <header style="text-align:center;">
-        <h1>My Website</h1>
-        <hr>
-    </header>
+<!-- Product details -->
+<p><b>Price:</b> Rp{{ product.price }}</p>
+<p><b>Stock:</b> {{ product.stock }}</p>
+<p><b>Color:</b> {{ product.color }}</p>
+<p><b>Size:</b> {{ product.size }}</p>
 
-    <main>
-        <p><a href="{% url 'main:show_main' %}">
-            <button>← Back to Product List</button>
-        </a></p>
+<!-- Thumbnail -->
+{% if product.thumbnail %}
+ <img src="{{ product.thumbnail }}" alt="thumbnail" width="150" height="100">
+{% endif %}
 
-        <h1>{{ product.name }}</h1>
-        <p>
-            <b>{{ product.category }}</b>
-            {% if product.is_featured %} | <b>Featured</b>{% endif %}
-            | <i>Stock: {{ product.stock }}</i>
-        </p>
+<!-- Description -->
+<p>{{ product.description }}</p>
 
-        {% if product.thumbnail %}
-        <img src="{{ product.thumbnail }}" alt="Product thumbnail" width="300" style="border-radius: 8px;">
-        <br><br>
-        {% endif %}
+{% if product.user %}
+    <p>Seller: {{ product.user.username }}</p>
+{% else %}
+    <p>Seller: Anonymous</p>
+{% endif %}
 
-        <p style="font-size: 16px; line-height: 1.5;">{{ product.description }}</p>
-    </main>
+<!-- Delete button -->
+<p>
+  <a href="{% url 'main:delete_product' product.pk %}" onclick="return confirm('Yakin mau hapus produk ini?')">
+    <button style="background:red;color:white;">Delete</button>
+  </a>
+</p>
 
-    <footer style="text-align:center; margin-top: 40px; font-size: 14px; color: #555;">
-        <hr>
-        <p>© 2025 My Website</p>
-    </footer>
-
-</body>
-</html>
+{% endblock content %}
