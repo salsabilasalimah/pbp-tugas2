@@ -16,4 +16,28 @@ link : https://salsabila-salimah-meowlfootball.pbp.cs.ui.ac.id/
 = Django menangani risiko tersebut dengan menyediakan session berbasis server, middleware CSRF, cookie dengan flag HttpOnly secara default, kemampuan untuk mengaktifkan Secure dan SameSite, serta memutar session ID setiap kali login agar aman dari session fixation.
 
 6. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial)
-= Implementasi langkah demi langkah dapat dilakukan dengan merancang kebutuhan login (username atau email), membuat custom AuthenticationForm jika perlu menambah fitur seperti remember me, menggunakan login() untuk menyimpan user di session dan mengatur expiry sesuai pilihan, mengaktifkan middleware autentikasi dan CSRF di settings, serta mengamankan cookie dengan HttpOnly, Secure, dan SameSite di produksi. Setelah itu, atur permission dan group sesuai kebutuhan otorisasi, dan lakukan pengujian dengan memastikan login, logout, dan proteksi akses bekerja sesuai harapan.
+= 
+a. Registrasi
+gunakan UserCreationForm → form bawaan Django untuk membuat akun.
+Setelah form valid → form.save() untuk membuat user baru → redirect ke login. Disediakan register.html untuk form pendaftaran.
+
+b. Login
+gunakan AuthenticationForm, authenticate(), dan login().
+Jika sukses → buat session → redirect ke main.
+Simpan juga cookie last_login berisi timestamp terakhir login.
+
+c. Logout
+gunakan logout() untuk hapus session.
+Hapus juga cookie last_login.
+
+d. Restriksi Akses
+gunakan decorator @login_required(login_url='/login') di show_main & show_news.
+Hanya user login yang bisa akses halaman main dan detail news.
+
+e. Menghubungkan Model News dengan User
+Tambah user = models.ForeignKey(User, ...) di model News.
+Saat membuat news → set news_entry.user = request.user.
+Di show_main, filter berita supaya hanya tampil berita milik user login jika ?filter=my dipilih.
+
+f. Menampilkan Data Cookie di Halaman
+Tambahkan last_login ke context → tampilkan di halaman main.
