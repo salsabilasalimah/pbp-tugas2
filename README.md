@@ -14,14 +14,14 @@ class, terus terakhir baru element atau tag selector. Jika ternyata terdapat atu
 5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial)!
 = >Step 1: Hapus Produk (Delete)
     Tambahin tombol Delete di setiap card produk
-    Klik tombol → sistem cek apakah user pemilik produk
-    Kalau iya → produk dihapus dari database
+    Klik tombol -> sistem cek apakah user pemilik produk
+    Kalau iya -> produk dihapus dari database
     User dibalikin ke daftar produk + pesan sukses
    >Step 2: Edit Produk
     Tambahin tombol Edit di card produk
-    Klik tombol → user diarahkan ke form yang sudah auto-terisi data produk lama
-    User ubah data → submit → sistem validasi
-    Data tersimpan → user balik ke detail/daftar produk + pesan sukses
+    Klik tombol -> user diarahkan ke form yang sudah auto-terisi data produk lama
+    User ubah data -> submit -> sistem validasi
+    Data tersimpan -> user balik ke detail/daftar produk + pesan sukses
   >Step 3: Navbar Responsive
     Navbar ditaruh di semua halaman biar konsisten
     Versi desktop: menu horizontal + logo + tombol login/logout
@@ -30,8 +30,8 @@ class, terus terakhir baru element atau tag selector. Jika ternyata terdapat atu
   >Step 4: Daftar Produk (List)
     Kalau belum ada produk: tampilkan ilustrasi/gambar + teks “Belum ada produk” + tombol buat produk
     Kalau sudah ada produk: tampilkan produk dalam bentuk card grid
-    Mobile → 1 kolom
-    Desktop → beberapa kolom
+    Mobile -> 1 kolom
+    Desktop -> beberapa kolom
     Setiap card: gambar, judul, harga, kategori, tanggal, deskripsi singkat, tombol Edit & Delete
   >Step 5: Halaman Login & Register
     Desain form simple & jelas dengan input besar, label jelas, tombol kontras
