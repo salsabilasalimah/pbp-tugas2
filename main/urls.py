@@ -5,6 +5,8 @@ from main.views import register
 from main.views import login_user
 from main.views import logout_user
 from . import views
+from main.views import edit_product
+from main.views import delete_product
 
 from main.views import (
     delete_product, show_main, create_product, show_product,
@@ -25,6 +27,8 @@ urlpatterns = [
     path('json/', show_json, name='show_json'),
     path('xml/<str:Product_id>/', show_xml_by_id, name='show_xml_by_id'),
     path('json/<str:Product_id>/', show_json_by_id, name='show_json_by_id'),
+    path('product/<uuid:id>/edit', edit_product, name='edit_product'),
+    path('product/<uuid:id>/delete', delete_product, name='delete_product'),
 ]
 
 # # Tambahkan ini untuk serve media files saat DEBUG = True

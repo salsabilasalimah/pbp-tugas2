@@ -1,57 +1,61 @@
- {% extends 'base.html' %}
- {% block content %}
-<h1>Meowl Stores</h1>
+{% extends 'base.html' %}
+{% load static %}
 
+{% block meta %}
+<title>Meowl Store</title>
+{% endblock meta %}
 
-<h5>Name:</h5>
-<p>{{ name }}</p>
+{% block content %}
+{% include 'navbar.html' %}
+<div class="bg-gradient-to-br from-blue-900 via-blue-800 to-blue-600 w-full pt-16 min-h-screen">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
-<h5>Class:</h5>
-<p>{{ class }}</p>
+    <!-- Header Section -->
+    <div class="mb-10 text-center">
+      <h1 class="text-5xl font-extrabold text-white drop-shadow-lg mb-3">
+        Latest <span class="text-yellow-400">Meowl Store</span>
+      </h1>
+      <p class="text-lg text-blue-100">Stay updated with the latest football stories and analysis</p>
+    </div>
 
-<a href="{% url 'main:create_product' %}">
-  <button>+ Add Product</button>
-</a>
-<hr>
+    <!-- Filter Section -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-10 bg-white/80 backdrop-blur-lg shadow-xl rounded-2xl border border-blue-200 p-5">
+      <div class="flex space-x-3 mb-4 sm:mb-0">
+        <a href="?" class="{% if request.GET.filter == 'all' or not request.GET.filter  %} bg-gradient-to-r from-blue-700 to-blue-500 text-white shadow-md{% else %}bg-white text-blue-800 border border-blue-400{% endif %} px-5 py-2 rounded-lg font-semibold transition duration-300 hover:scale-105 hover:shadow-lg">
+          All Product
+        </a>
+        <a href="?filter=my" class="{% if request.GET.filter == 'my' %} bg-gradient-to-r from-blue-700 to-blue-500 text-white shadow-md{% else %}bg-white text-blue-800 border border-blue-400{% endif %} px-5 py-2 rounded-lg font-semibold transition duration-300 hover:scale-105 hover:shadow-lg">
+          My Product
+        </a>
+      </div>
+      {% if user.is_authenticated %}
+        <div class="text-sm text-gray-600 font-medium">
+          Last login: <span class="text-blue-700">{{ last_login }}</span>
+        </div>
+      {% endif %}
+    </div>
 
-<a href="{% url 'main:logout' %}">
-  <button>Logout</button>
-</a>
-
-<h5>Sesi terakhir login: {{ last_login }}</h5>
-<hr>
-
-<a href="?filter=all">
-    <button type="button">All Product</button>
-</a>
-<a href="?filter=my">
-    <button type="button">My Product</button>
-</a> 
-{% if not product_list %}
-<p>Belum ada produk.</p>
-{% else %}
-
-{% for product in product_list %}
-<div>
-  <h2><a href="{% url 'main:show_product' product.id %}">{{ product.name }}</a></h2>
-
-  <p><b>{{ product.category }}</b>{% if product.is_featured %} | 
-    <b>Featured</b>{% endif %} | <i>{{ product.created_at|date:"d M Y H:i" }}</i> 
-    | Views: {{ product.views }}</p>
-
-  {% if product.thumbnail %}
-  <img src="{{ product.thumbnail }}" alt="thumbnail" width="150" height="100">
-  <br />
-  {% endif %}
-
-  <p>{{ product.description|truncatewords:25 }}...</p>
-
-  <p><a href="{% url 'main:show_product' product.id %}"><button>Read More</button></a></p>
+    <!-- Product Grid -->
+    {% if not product_list %}
+      <div class="bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-blue-200 p-12 text-center">
+        <div class="w-32 h-32 mx-auto mb-6">
+          <img src="{% static 'image/product.png' %}" alt="No product available" class="w-full h-full object-contain opacity-90">
+        </div>
+        <h3 class="text-2xl font-bold text-blue-900 mb-2">No product found</h3>
+        <p class="text-gray-600 mb-6">Be the first to share Meowl Store with the community.</p>
+        <a href="{% url 'main:create_product' %}" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-700 to-blue-500 text-white font-medium rounded-lg hover:from-blue-800 hover:to-blue-600 hover:shadow-lg transition duration-300">
+          + Create Product
+        </a>
+      </div>
+    {% else %}
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {% for product in product_list %}
+          <div class="transform hover:scale-105 transition duration-300">
+            {% include 'card_product.html' with product=product %}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
 </div>
-
-<hr>
-{% endfor %}
-
-{% endif %}
-
- {% endblock content %}
+{% endblock content %}

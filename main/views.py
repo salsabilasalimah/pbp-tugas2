@@ -4,15 +4,14 @@ from main.forms import ProductForm
 from main.models import Product
 from django.http import HttpResponse
 from django.core import serializers
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth import authenticate, login
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 import datetime
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+
 
 # Create your views here.
 @login_required(login_url='/login')
@@ -85,10 +84,6 @@ def show_json_by_id(request, Product_id):
    except Product.DoesNotExist:
        return HttpResponse(status=404)
    
-def delete_product(request, pk):
-    product = get_object_or_404(Product, pk=pk)
-    product.delete()
-    return redirect('main:show_main')
 
 def register(request):
     form = UserCreationForm()
@@ -123,3 +118,21 @@ def logout_user(request):
     response = HttpResponseRedirect(reverse('main:login'))
     response.delete_cookie('last_login')
     return response
+
+def edit_product(request, id):
+    product = get_object_or_404(Product, pk=id)
+    form = ProductForm(request.POST or None, instance=product)
+    if form.is_valid() and request.method == 'POST':
+        form.save()
+        return redirect('main:show_main')
+
+    context = {
+        'form': form
+    }
+
+    return render(request, "edit_product.html", context)
+
+def delete_product(request, id):
+    product = get_object_or_404(Product, pk=id)
+    product.delete()
+    return redirect('main:show_main')
