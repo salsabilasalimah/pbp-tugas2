@@ -43,7 +43,11 @@
       {% endif %}
 
       <!-- Form -->
+<<<<<<< HEAD
       <form id="loginForm" class="space-y-6">
+=======
+      <form method="POST" action="{% url 'main:login' %}" class="space-y-6">
+>>>>>>> e242ebdab6d2ca6e2f599f6a27ba66733df14649
         {% csrf_token %}
         
         <div>
@@ -111,6 +115,7 @@
     </div>
   </div>
 </div>
+<<<<<<< HEAD
 
 <script>
 document.getElementById('loginForm').onsubmit = async function(e) {
@@ -133,4 +138,6 @@ document.getElementById('loginForm').onsubmit = async function(e) {
     }
 };
 </script>
+=======
+>>>>>>> e242ebdab6d2ca6e2f599f6a27ba66733df14649
 {% endblock content %}

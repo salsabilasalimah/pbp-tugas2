@@ -4,6 +4,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Product(models.Model):
+<<<<<<< HEAD
     CATEGORY_CHOICES = [
         ('accessories', 'Accessories'),
         ('jersey', 'Jersey'),
@@ -23,6 +24,18 @@ class Product(models.Model):
     stock = models.PositiveIntegerField(default=0)
     views = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
+=======
+    
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=255)
+    price = models.IntegerField()  
+    description = models.TextField()
+    thumbnail = models.URLField(blank=True, null=True)
+    category = models.CharField(max_length=100)
+    is_featured = models.BooleanField(default=0)
+    stock = models.PositiveIntegerField(default=0)
+    views = models.PositiveIntegerField(default=0)
+>>>>>>> e242ebdab6d2ca6e2f599f6a27ba66733df14649
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
     def __str__(self):

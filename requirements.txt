@@ -4,5 +4,9 @@ whitenoise
 psycopg2-binary
 requests
 urllib3
+<<<<<<< HEAD
 python-dotenv
 django-cors-headers
+=======
+python-dotenv
+>>>>>>> e242ebdab6d2ca6e2f599f6a27ba66733df14649

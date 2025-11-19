@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'main',
     'authentication',
     'corsheaders',
+    'django.contrib.humanize',
 ]
 
 MIDDLEWARE = [
@@ -167,3 +168,7 @@ else:
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+LANGUAGE_CODE = 'id-id'
+
+USE_L10N = True
+USE_THOUSAND_SEPARATOR = True
