@@ -14,6 +14,12 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.utils.html import strip_tags
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login as auth_login
+import requests
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.html import strip_tags
+import json
+from django.http import JsonResponse
 
 @login_required(login_url='/login')
 def show_main(request):
@@ -88,7 +94,7 @@ def show_json_by_id(request, product_id):
                 "description": product.description,
                 "category": product.category,
                 "thumbnail": product.thumbnail,
-                "amount": product.amount,
+                "stock": product.stock,
                 "price": product.price,
                 "created_at": product.created_at,
                 "is_featured": product.is_featured,
@@ -131,19 +137,6 @@ def logout_user(request):
     response.delete_cookie('last_login')
     return response
 
-def edit_product(request, id):
-    product = get_object_or_404(Product, pk=id)
-    form = ProductForm(request.POST or None, instance=product)
-    if form.is_valid() and request.method == 'POST':
-        form.save()
-        return redirect('main:show_main')
-    context = {'form': form}
-    return render(request, "edit_product.html", context)
-
-def delete_product(request, id):
-    product = get_object_or_404(Product, pk=id)
-    product.delete()
-    return redirect('main:show_main')
 
 @csrf_exempt
 @require_POST
@@ -157,7 +150,7 @@ def add_product_entry_ajax(request):
     is_featured = request.POST.get("is_featured") in ['on', 'true', '1']
     user = request.user if request.user.is_authenticated else None
 
-    new_product = Product(
+    product_product = Product(
         name=name,
         price=price,
         description=description,
@@ -167,7 +160,7 @@ def add_product_entry_ajax(request):
         is_featured=is_featured,
         user=user
     )
-    new_product.save()
+    product_product.save()
     return HttpResponse(b"CREATED", status=201)
 
 def get_products_in_json(request):
@@ -224,8 +217,129 @@ def delete_product(request, id):
     product = get_object_or_404(Product, pk=id, user=request.user)
     product_name = product.name # Simpan nama sebelum dihapus
     product.delete()
-    
-    # TAMBAHKAN PESAN SUKSES DI SINI
+
     messages.success(request, f"Product '{product_name}' has been deleted.")
 
     return redirect('main:show_main')
+
+@csrf_exempt
+def login(request):
+    """
+    API endpoint for user login from Flutter app.
+    Expects POST data with username and password.
+    """
+    if request.method != 'POST':
+        return JsonResponse({
+            "status": False,
+            "message": "Invalid request method."
+        }, status=405)
+
+    username = request.POST.get('username', '').strip()
+    password = request.POST.get('password', '')
+
+    if not username or not password:
+        return JsonResponse({
+            "status": False,
+            "message": "Username and password are required."
+        }, status=400)
+
+    user = authenticate(username=username, password=password)
+    if user is not None:
+        if user.is_active:
+            auth_login(request, user)
+            return JsonResponse({
+                "username": user.username,
+                "status": True,
+                "message": "Login successful!"
+            }, status=200)
+        else:
+            return JsonResponse({
+                "status": False,
+                "message": "Login failed, account is disabled."
+            }, status=401)
+    else:
+        return JsonResponse({
+            "status": False,
+            "message": "Login failed, please check your username or password."
+        }, status=401)
+    
+def proxy_image(request):
+    image_url = request.GET.get('url')
+    if not image_url:
+        return HttpResponse('No URL provided', status=400)
+    
+    try:
+        # Fetch image from external source
+        response = requests.get(image_url, timeout=10)
+        response.raise_for_status()
+        
+        # Return the image with proper content type
+        return HttpResponse(
+            response.content,
+            content_type=response.headers.get('Content-Type', 'image/jpeg')
+        )
+    except requests.RequestException as e:
+        return HttpResponse(f'Error fetching image: {str(e)}', status=500)
+    
+@csrf_exempt
+def create_product_flutter(request):
+    """
+    API endpoint for creating a product from Flutter app.
+    Expects JSON payload with product details.
+    """
+    # if request.method != 'POST':
+    #     return JsonResponse({"status": "error", "message": "Method not allowed"}, status=405)
+
+    # Check if user is authenticated
+    if not request.user.is_authenticated:
+        return JsonResponse({"status": "error", "message": "Authentication required"}, status=401)
+
+    try:
+        data = json.loads(request.body)
+    except json.JSONDecodeError:
+        return JsonResponse({"status": "error", "message": "Invalid JSON"}, status=400)
+
+    # Extract and validate required fields
+    name = strip_tags(data.get("title", "").strip())  # Map 'title' to 'name'
+    description = strip_tags(data.get("description", "").strip())  # Map 'description' to 'description'
+    category = data.get("category", "").strip()
+    thumbnail = data.get("thumbnail", "").strip()
+    price = data.get("price")
+    stock = data.get("stock", 0)
+    is_featured = data.get("is_featured", False)
+
+    # Validation
+    errors = []
+    if not name:
+        errors.append("Name is required")
+    if not description:
+        errors.append("Description is required")
+    if not category:
+        errors.append("Category is required")
+    if price is None or not isinstance(price, (int, float)) or price < 0:
+        errors.append("Valid price is required")
+    if not isinstance(stock, int) or stock < 0:
+        errors.append("Valid stock quantity is required")
+    if category not in dict(Product.CATEGORY_CHOICES):
+        errors.append("Invalid category")
+
+    if errors:
+        return JsonResponse({"status": "error", "message": "; ".join(errors)}, status=400)
+
+    try:
+        # Create product instance
+        product = Product(
+            name=name,
+            description=description,
+            category=category,
+            thumbnail=thumbnail if thumbnail else None,
+            price=int(price),
+            stock=stock,
+            is_featured=bool(is_featured),
+            user=request.user
+        )
+        product.save()
+        return JsonResponse({"status": "success", "product_id": str(product.id)}, status=201)
+    except Exception as e:
+        # Log the error for debugging
+        return JsonResponse({"status": "error", "message": "Failed to create product"}, status=500)
